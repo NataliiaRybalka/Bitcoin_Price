@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const { envConstants: { PORT, MONGOOSE_CONNECTION } } = require('./constants');
 const cronRun = require('./cron-jobs');
-const { intervalRouter, priceRouter } = require('./routes');
+const { priceRouter } = require('./routes');
 
 const app = express();
 
@@ -18,7 +18,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/interval', intervalRouter);
 app.use('/', priceRouter);
 
 app.listen(PORT, () => {
