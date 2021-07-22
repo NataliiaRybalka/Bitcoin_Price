@@ -15,8 +15,6 @@ module.exports = {
         time = 60 * 60;
       } else if (interval === '1d') {
         time = 24 * 60 * 60;
-      } else if (interval === '5') {
-        time = 5;
       }
 
       await IntervalModel.create({ interval: time });
