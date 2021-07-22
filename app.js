@@ -1,7 +1,26 @@
 require('dotenv').config();
-var express = require('express');
-var PORT = require('./constants/index.ts').envConstants.PORT;
-var app = express();
-app.listen(PORT, function () {
-    console.log("App listen " + PORT);
+const express = require('express');
+const mongoose = require('mongoose');
+
+const { envConstants: { PORT, MONGOOSE_CONNECTION } } = require('./constants');
+const cronRun = require('./cron-jobs');
+const { intervalRouter } = require('./routes');
+
+const app = express();
+
+(() => {
+  mongoose.connect(MONGOOSE_CONNECTION, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
+})();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/interval', intervalRouter);
+
+app.listen(PORT, () => {
+  console.log(`App listen ${PORT}`);
+  cronRun();
 });
