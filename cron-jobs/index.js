@@ -1,6 +1,7 @@
 const cron = require('node-cron');
 
 const { IntervalModel } = require('../db');
+const createNewPrice = require('./createNewPrice');
 
 let counter = 0;
 
@@ -10,7 +11,7 @@ module.exports = () => {
     counter++;
 
     if (counter === interval[0].interval) {
-      console.log('cron');
+      await createNewPrice();
       counter = 0;
     }
   });

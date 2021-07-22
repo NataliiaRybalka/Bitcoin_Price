@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const intervalSchema = new Schema({
   interval: {
-    type: String
+    type: Number
   }
 }, { timestamps: true });
 

@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
-router.post('/', );
-router.get('/', );
+const { priceController } = require('../controllers');
+
+router.get('/', priceController.getPrices);
 
 module.exports = router;
