@@ -4,7 +4,7 @@ import { httpRequest } from '../herpers/http.helper';
 import PriceTable from './PriceTable';
 
 export default function BitcoinPrice() {
-  const [interval, setInterval] = useState();
+  const [interval, setInterval] = useState('1m');
   const [price, setPrice] = useState([]);
 
   const { request } = httpRequest();

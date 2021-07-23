@@ -17,7 +17,14 @@ module.exports = {
         time = 24 * 60 * 60;
       }
 
-      await IntervalModel.create({ interval: time });
+      const intervalFromDB = await IntervalModel.find({}).sort({ createdAt: -1 }).limit(1);
+
+      if (!intervalFromDB.length) {
+        await IntervalModel.create({ interval: time });
+        return;
+      }
+
+      await IntervalModel.updateOne({ _id: intervalFromDB[0]._id }, { interval: time });
 
       res.json('OK');
     } catch (e) {
