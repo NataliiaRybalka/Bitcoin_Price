@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function PriceTable(props) {
   const {price} = props;
-  
+
   return (
     <div>
       <table>
@@ -13,6 +13,12 @@ export default function PriceTable(props) {
           </tr>
         </thead>
         <tbody>
+          {price.map(onePrice => (
+            <tr key={onePrice._id}>
+              <td>{onePrice.date}</td>
+              <td>{onePrice.price}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
