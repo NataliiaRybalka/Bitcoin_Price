@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import './BitcoinPrice.css';
 import { httpRequest } from '../herpers/http.helper';
+import PriceTable from './PriceTable';
 
 export default function BitcoinPrice() {
   const [interval, setInterval] = useState('1m');
+  const [price, setPrice] = useState();
+
   const { request } = httpRequest();
 
   const getPage = async () => {
     const data = await request();
+    setPrice(data);
   }
 
   useEffect(() => {
     getPage();
-  });
+  }, []);
 
   const onSelect = ({target: {value}}) => {
     setInterval(value);
@@ -38,16 +42,7 @@ export default function BitcoinPrice() {
         </select>
       </div>
       
-      <table>
-        <thead>
-          <tr>
-            <td>Дата</td>
-            <td>Цена</td>
-          </tr>
-        </thead>
-        <tbody>
-        </tbody>
-      </table>
+      <PriceTable price={price} />
     </div>
   )
 }
