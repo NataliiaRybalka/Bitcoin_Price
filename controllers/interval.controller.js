@@ -4,7 +4,7 @@ module.exports = {
   selectedInterval: async (req, res, next) => {
     try {
       const { interval } = req.body;
-
+console.log(req);
       let time = null;
 
       if (interval === '1m') {

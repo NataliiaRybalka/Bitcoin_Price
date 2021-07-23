@@ -1,5 +1,5 @@
 export const httpRequest = () => {
-  const request = async (url, method = 'GET', body = null, headers = {}) => {
+  const request = async (url = 'http://localhost:3100/', method = 'GET', body = null, headers = {}) => {
     const res = await fetch(url, {method, body, headers});
     const data = await res.json();
 
