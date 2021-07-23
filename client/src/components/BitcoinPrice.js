@@ -6,8 +6,6 @@ import PriceTable from './PriceTable';
 export default function BitcoinPrice() {
   const [interval, setInterval] = useState('1m');
   const [price, setPrice] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [limitsPrice, setLimitsPrice] = useState([]);
 
   const { request } = httpRequest();
 
@@ -19,26 +17,6 @@ export default function BitcoinPrice() {
   useEffect(() => {
     getPage();
   }, []);
-
-  const limitToShow = 10;
-  const totalPage = Math.ceil(price.length / limitToShow);
-  const arrayOfPages = [];
-
-  for (let i = 0; i < totalPage; i++) {
-    arrayOfPages.push(i+1);
-  }
-
-  const selectPage = (page) => {
-    setCurrentPage(page);
-    fillingLimitsPrice();
-  }
-
-  const fillingLimitsPrice = () => {
-    const indexOfLastRow = currentPage * limitToShow;
-    const indexOfFirstRow = indexOfLastRow - limitToShow;
-    const currentRows = price.slice(indexOfFirstRow, indexOfLastRow);
-    setLimitsPrice(currentRows);
-  }
 
   const onSelect = ({target: {value}}) => {
     setInterval(value);
@@ -64,11 +42,7 @@ export default function BitcoinPrice() {
         </select>
       </div>
       
-      <PriceTable price={price} limitsPrice={limitsPrice} />
-
-      {arrayOfPages.map(page => (
-        <button key={page} onClick={() => selectPage(page)}>{page}</button>
-      ))}
+      <PriceTable price={price} />
     </div>
   )
 }

@@ -5,7 +5,7 @@ export default function PriceTable(props) {
   const [ignored, updateState] = useState();
   const forceUpdate = useCallback(() => updateState({}), []);
 
-  const { price, limitsPrice } = props;
+  const { price } = props;
   
   const sortPrice = (param, direction) => {
     if (param === 'date') {
@@ -59,18 +59,12 @@ export default function PriceTable(props) {
           </tr>
         </thead>
         <tbody>
-          {limitsPrice.map(onePrice => (
+          {price.map(onePrice => (
             <tr key={onePrice._id}>
               <td>{onePrice.date}</td>
               <td>{onePrice.price}</td>
             </tr>
           ))}
-          {/* {price.map(onePrice => (
-            <tr key={onePrice._id}>
-              <td>{onePrice.date}</td>
-              <td>{onePrice.price}</td>
-            </tr>
-          ))} */}
         </tbody>
       </table>
     </div>
