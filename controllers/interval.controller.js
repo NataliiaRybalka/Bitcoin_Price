@@ -3,7 +3,6 @@ const { IntervalModel } = require('../db');
 module.exports = {
   selectedInterval: async (req, res, next) => {
     try {
-      console.log(req.body);
       const { interval } = req.body;
 
       let time = null;

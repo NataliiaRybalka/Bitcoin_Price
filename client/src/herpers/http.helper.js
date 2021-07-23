@@ -2,6 +2,7 @@ export const httpRequest = () => {
   const request = async (url = 'http://localhost:3100/', method = 'GET', body = null, headers = {}) => {
     if (body) {
       body = JSON.stringify(body);
+      headers['Content-Type'] = 'application/json';
     }
 
     const res = await fetch(url, {method, body, headers});
