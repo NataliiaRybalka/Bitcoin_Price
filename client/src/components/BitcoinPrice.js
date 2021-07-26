@@ -4,10 +4,18 @@ import { httpRequest } from '../herpers/http.helper';
 import PriceTable from './PriceTable';
 
 export default function BitcoinPrice() {
+  const { request } = httpRequest();
+
   const [interval, setInterval] = useState('1m');
   const [price, setPrice] = useState([]);
+  const [selectedPage, setSelectedPage] = useState(1);
+  
+  const rowsToShowPerOnePage = 10;
+  const totalPages = Math.ceil(price.length / rowsToShowPerOnePage);
 
-  const { request } = httpRequest();
+  const lastRowOnPage = selectedPage * rowsToShowPerOnePage;
+  const firstRowOnPage = lastRowOnPage - rowsToShowPerOnePage + 1;
+  const currentRows = price.slice(firstRowOnPage, lastRowOnPage + 1);
 
   const getPage = async () => {
     const data = await request();
@@ -30,6 +38,15 @@ export default function BitcoinPrice() {
     sendInterval();
   }, [interval]);
 
+  const arrayForButtons = [];
+  for (let i = 0; i < totalPages; i++) {
+    arrayForButtons.push(i + 1);
+  }
+
+  const changePage = (page) => {
+    setSelectedPage(page);
+  }
+
   return (
     <div>
       <div id='selectInterval'>
@@ -42,7 +59,11 @@ export default function BitcoinPrice() {
         </select>
       </div>
       
-      <PriceTable price={price} />
+      <PriceTable price={price} currentRows={currentRows} />
+
+      {arrayForButtons.map(oneOfArray => (
+        <button onClick={() => changePage(oneOfArray)} key={oneOfArray}>{oneOfArray}</button>
+      ))}
     </div>
   )
 }
