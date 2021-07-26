@@ -5,7 +5,7 @@ export default function PriceTable(props) {
   const [ignored, updateState] = useState();
   const forceUpdate = useCallback(() => updateState({}), []);
 
-  const { price, currentRows } = props;
+  const { price, firstRowOnPage, lastRowOnPage } = props;
 
   const sortPrice = (param, direction) => {
     if (param === 'date') {
@@ -40,6 +40,8 @@ export default function PriceTable(props) {
 
     forceUpdate();
   }
+
+  const currentRows = price.slice(firstRowOnPage, lastRowOnPage + 1);
 
   return (
     <div>

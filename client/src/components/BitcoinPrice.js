@@ -15,7 +15,6 @@ export default function BitcoinPrice() {
 
   const lastRowOnPage = selectedPage * rowsToShowPerOnePage;
   const firstRowOnPage = lastRowOnPage - rowsToShowPerOnePage + 1;
-  const currentRows = price.slice(firstRowOnPage, lastRowOnPage + 1);
 
   const getPage = async () => {
     const data = await request();
@@ -59,7 +58,7 @@ export default function BitcoinPrice() {
         </select>
       </div>
       
-      <PriceTable price={price} currentRows={currentRows} />
+      <PriceTable price={price} lastRowOnPage={lastRowOnPage} firstRowOnPage={firstRowOnPage} />
 
       {arrayForButtons.map(oneOfArray => (
         <button onClick={() => changePage(oneOfArray)} key={oneOfArray}>{oneOfArray}</button>
