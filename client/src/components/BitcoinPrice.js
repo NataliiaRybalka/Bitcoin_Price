@@ -9,10 +9,9 @@ export default function BitcoinPrice() {
   const [price, setPrice] = useState([]);
   const [pages, setPages] = useState(1);
   const [selectedPage, setSelectedPage] = useState(1);
-  const [sortParam, setSortParam] = useState('dl');
 
   const getPage = async () => {
-    const data = await request(`http://localhost:3101?sort=${sortParam}`);
+    const data = await request(`http://localhost:3101/`);
 
     await setPrice(data.price);
     await setPages(data.totalPages);
@@ -39,37 +38,23 @@ export default function BitcoinPrice() {
     arrayForButtons.push(i + 1);
   }
 
-  const changePage = async (page) => {
+  const setPage = (page) => {
     setSelectedPage(page);
-
-    const data = await request(`http://localhost:3101?page=${page}&sort=${sortParam}`);
-    await setPrice(data.price);
   }
 
-  const setParam = (param, direction) => {
-    if (param === 'date') {
-      if (direction === 'largerTop') {
-        setSortParam('dl');
-      } else if (direction === 'smallerTop') {
-        setSortParam('ds');
-      }
-    } else if (param === 'price') {
-      if (direction === 'largerTop') {
-        setSortParam('pl');
-      } else if (direction === 'smallerTop') {
-        setSortParam('ps');
-      }
-    }
-  }
-
-  const sortByParam = async () => {
-    const data = await request(`http://localhost:3100?page=${selectedPage}&sort=${sortParam}`);
+  const changePage = async () => {
+    const data = await request(`http://localhost:3101?page=${selectedPage}`);
     await setPrice(data.price);
-  };
+  }
 
   useEffect(() => {
-    sortByParam();
-  }, [sortParam]);
+    changePage();
+  }, [selectedPage]);
+
+  const sortPrice = async (param, direction) => {
+    const data = await request(`http://localhost:3101?page=${selectedPage}&sortParam=${param}&sortDirection=${direction}`);
+    await setPrice(data.price);
+  };
 
   return (
     <div>
@@ -87,14 +72,14 @@ export default function BitcoinPrice() {
         <thead>
           <tr>
             <td>
-              <span className='up' onClick={()=>setParam('date', 'largerTop')}>&uarr;</span>
+              <span className='up' onClick={()=>sortPrice('date', 'largerTop')}>&uarr;</span>
               Дата
-              <span className='down' onClick={()=>setParam('date', 'smallerTop')}>&darr;</span>
+              <span className='down' onClick={()=>sortPrice('date', 'smallerTop')}>&darr;</span>
             </td>
             <td>
-              <span className='up' onClick={()=>setParam('price', 'largerTop')}>&uarr;</span>
+              <span className='up' onClick={()=>sortPrice('price', 'largerTop')}>&uarr;</span>
               Цена
-              <span className='down' onClick={()=>setParam('price', 'smallerTop')}>&darr;</span>
+              <span className='down' onClick={()=>sortPrice('price', 'smallerTop')}>&darr;</span>
             </td>
           </tr>
         </thead>
@@ -109,7 +94,7 @@ export default function BitcoinPrice() {
       </table>
 
       {arrayForButtons.map(page => (
-        <button onClick={() => changePage(page)} key={page}>{page}</button>
+        <button onClick={() => setPage(page)} key={page}>{page}</button>
       ))}
     </div>
   )

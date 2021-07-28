@@ -9,30 +9,32 @@ module.exports = {
 
       const totalPages = Math.ceil(fullArray.length / rowsToShowPerOnePage);
 
-      const { page, sort } = req.query;
-console.log(sort);
-      let price;
+      const { page, sortParam, sortDirection } = req.query;
 
-      if (sort === 'dl') {
-        price = await PriceSchema.find({})
-          .sort({ date: -1 })
-          .skip((page - 1) * rowsToShowPerOnePage)
-          .limit(rowsToShowPerOnePage);
-      } else if (sort === 'ds') {
-        price = await PriceSchema.find({})
-          .sort({ date: 1 })
-          .skip((page - 1) * rowsToShowPerOnePage)
-          .limit(rowsToShowPerOnePage);
-      } else if (sort === 'pl') {
-        price = await PriceSchema.find({})
-          .sort({ price: -1 })
-          .skip((page - 1) * rowsToShowPerOnePage)
-          .limit(rowsToShowPerOnePage);
-      } else if (sort === 'ps') {
-        price = await PriceSchema.find({})
-          .sort({ price: 1 })
-          .skip((page - 1) * rowsToShowPerOnePage)
-          .limit(rowsToShowPerOnePage);
+      let price = await PriceSchema.find({})
+        .sort({ date: -1 })
+        .skip((page - 1) * rowsToShowPerOnePage)
+        .limit(rowsToShowPerOnePage);
+
+      if (sortParam === 'date') {
+        if (sortDirection === 'smallerTop') {
+          price = await PriceSchema.find({})
+            .sort({ date: 1 })
+            .skip((page - 1) * rowsToShowPerOnePage)
+            .limit(rowsToShowPerOnePage);
+        }
+      } else if (sortParam === 'price') {
+        if (sortDirection === 'largerTop') {
+          price = await PriceSchema.find({})
+            .sort({ price: -1 })
+            .skip((page - 1) * rowsToShowPerOnePage)
+            .limit(rowsToShowPerOnePage);
+        } else if (sortDirection === 'smallerTop') {
+          price = await PriceSchema.find({})
+            .sort({ price: 1 })
+            .skip((page - 1) * rowsToShowPerOnePage)
+            .limit(rowsToShowPerOnePage);
+        }
       }
 
       res.json({ totalPages, price });
