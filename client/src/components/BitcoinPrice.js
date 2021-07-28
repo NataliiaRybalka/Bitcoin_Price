@@ -9,6 +9,8 @@ export default function BitcoinPrice() {
   const [price, setPrice] = useState([]);
   const [pages, setPages] = useState(1);
   const [selectedPage, setSelectedPage] = useState(1);
+  const [sortParam, setSortParam] = useState('date');
+  const [sortDirection, setSortDirection] = useState('largerTop');
 
   const getPage = async () => {
     const data = await request(`http://localhost:3101/`);
@@ -43,7 +45,7 @@ export default function BitcoinPrice() {
   }
 
   const changePage = async () => {
-    const data = await request(`http://localhost:3101?page=${selectedPage}`);
+    const data = await request(`http://localhost:3101?page=${selectedPage}&sortParam=${sortParam}&sortDirection=${sortDirection}`);
     await setPrice(data.price);
   }
 
@@ -51,10 +53,19 @@ export default function BitcoinPrice() {
     changePage();
   }, [selectedPage]);
 
-  const sortPrice = async (param, direction) => {
-    const data = await request(`http://localhost:3101?page=${selectedPage}&sortParam=${param}&sortDirection=${direction}`);
+  const setSortParamAndDirection = (param, direction) => {
+    setSortParam(param);
+    setSortDirection(direction);
+  };
+
+  const sortPrice = async () => {
+    const data = await request(`http://localhost:3101?page=${selectedPage}&sortParam=${sortParam}&sortDirection=${sortDirection}`);
     await setPrice(data.price);
   };
+
+  useEffect(() => {
+    sortPrice();
+  }, [sortParam, sortDirection])
 
   return (
     <div>
@@ -72,14 +83,14 @@ export default function BitcoinPrice() {
         <thead>
           <tr>
             <td>
-              <span className='up' onClick={()=>sortPrice('date', 'largerTop')}>&uarr;</span>
+              <span className='up' onClick={()=>setSortParamAndDirection('date', 'largerTop')}>&uarr;</span>
               Дата
-              <span className='down' onClick={()=>sortPrice('date', 'smallerTop')}>&darr;</span>
+              <span className='down' onClick={()=>setSortParamAndDirection('date', 'smallerTop')}>&darr;</span>
             </td>
             <td>
-              <span className='up' onClick={()=>sortPrice('price', 'largerTop')}>&uarr;</span>
+              <span className='up' onClick={()=>setSortParamAndDirection('price', 'largerTop')}>&uarr;</span>
               Цена
-              <span className='down' onClick={()=>sortPrice('price', 'smallerTop')}>&darr;</span>
+              <span className='down' onClick={()=>setSortParamAndDirection('price', 'smallerTop')}>&darr;</span>
             </td>
           </tr>
         </thead>
