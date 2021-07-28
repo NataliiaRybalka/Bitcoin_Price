@@ -1,5 +1,5 @@
 export const httpRequest = () => {
-  const request = async (url = 'http://localhost:3100/', method = 'GET', body = null, headers = {}) => {
+  const request = async (url = '', method = 'GET', body = null, headers = {}) => {
     if (body) {
       body = JSON.stringify(body);
       headers['Content-Type'] = 'application/json';
