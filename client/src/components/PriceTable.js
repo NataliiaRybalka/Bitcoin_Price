@@ -1,47 +1,12 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import './PriceTable.css';
 
 export default function PriceTable(props) {
   const [ignored, updateState] = useState();
-  const forceUpdate = useCallback(() => updateState({}), []);
 
-  const { price, firstRowOnPage, lastRowOnPage } = props;
+  const { price } = props;
 
-  const sortPrice = (param, direction) => {
-    if (param === 'date') {
-      if (direction === 'up') {
-        price.sort((a, b) => {
-          if (a.date > b.date) { 
-            return -1; 
-          }
-          if (a.date < b.date) { 
-            return 1; 
-          }
-          return 0;
-        });
-      } else if (direction === 'down') {
-        price.sort((a, b) => {
-          if (a.date < b.date) { 
-            return -1; 
-          }
-          if (a.date > b.date) { 
-            return 1; 
-          }
-          return 0;
-        });
-      }
-    } else if (param === 'price') {
-      if (direction === 'up') {
-        price.sort((a, b) => b.price - a.price);
-      } else if (direction === 'down') {
-        price.sort((a, b) => a.price - b.price);
-      }
-    }
-
-    forceUpdate();
-  }
-
-  const currentRows = price.slice(firstRowOnPage, lastRowOnPage + 1);
+  const sortPrice = (param, direction) => {}
 
   return (
     <div>
@@ -61,18 +26,12 @@ export default function PriceTable(props) {
           </tr>
         </thead>
         <tbody>
-          {currentRows.map(onePrice => (
+          {price.map(onePrice => (
             <tr key={onePrice._id}>
               <td>{onePrice.date}</td>
               <td>{onePrice.price}</td>
             </tr>
           ))}
-          {/* {price.map(onePrice => (
-            <tr key={onePrice._id}>
-              <td>{onePrice.date}</td>
-              <td>{onePrice.price}</td>
-            </tr>
-          ))} */}
         </tbody>
       </table>
     </div>

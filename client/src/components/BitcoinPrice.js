@@ -9,12 +9,6 @@ export default function BitcoinPrice() {
   const [interval, setInterval] = useState('1m');
   const [price, setPrice] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
-  
-  const rowsToShowPerOnePage = 10;
-  const totalPages = Math.ceil(price.length / rowsToShowPerOnePage);
-
-  const lastRowOnPage = selectedPage * rowsToShowPerOnePage;
-  const firstRowOnPage = lastRowOnPage - rowsToShowPerOnePage + 1;
 
   const getPage = async () => {
     const data = await request();
@@ -38,7 +32,7 @@ export default function BitcoinPrice() {
   }, [interval]);
 
   const arrayForButtons = [];
-  for (let i = 0; i < totalPages; i++) {
+  for (let i = 0; i < 5; i++) {
     arrayForButtons.push(i + 1);
   }
 
@@ -58,10 +52,10 @@ export default function BitcoinPrice() {
         </select>
       </div>
       
-      <PriceTable price={price} lastRowOnPage={lastRowOnPage} firstRowOnPage={firstRowOnPage} />
+      <PriceTable price={price} />
 
-      {arrayForButtons.map(oneOfArray => (
-        <button onClick={() => changePage(oneOfArray)} key={oneOfArray}>{oneOfArray}</button>
+      {arrayForButtons.map(page => (
+        <button onClick={() => changePage(page)} key={page}>{page}</button>
       ))}
     </div>
   )
