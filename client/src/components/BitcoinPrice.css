@@ -6,23 +6,3 @@ select {
   margin-top: 20px;
   height: 20px;
 }
-
-table {
-  width: 500px;
-}
-table, tr, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-  text-align: center;
-}
-thead {
-  font-weight: bold;
-}
-.up {
-  cursor: pointer;
-  margin-right: 50px;
-}
-.down {
-  cursor: pointer;
-  margin-left: 50px;
-}

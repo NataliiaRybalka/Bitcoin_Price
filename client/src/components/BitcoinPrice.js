@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './BitcoinPrice.css';
 import { httpRequest } from '../herpers/http.helper';
+import PriceTable from './PriceTable';
 
 export default function BitcoinPrice() {
   const { request } = httpRequest();
@@ -79,30 +80,7 @@ export default function BitcoinPrice() {
         </select>
       </div>
       
-      <table>
-        <thead>
-          <tr>
-            <td>
-              <span className='up' onClick={()=>setSortParamAndDirection('date', 'largerTop')}>&uarr;</span>
-              Дата
-              <span className='down' onClick={()=>setSortParamAndDirection('date', 'smallerTop')}>&darr;</span>
-            </td>
-            <td>
-              <span className='up' onClick={()=>setSortParamAndDirection('price', 'largerTop')}>&uarr;</span>
-              Цена
-              <span className='down' onClick={()=>setSortParamAndDirection('price', 'smallerTop')}>&darr;</span>
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          {price.map(onePrice => (
-            <tr key={onePrice._id}>
-              <td>{onePrice.date}</td>
-              <td>{onePrice.price}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <PriceTable price={price} setSortParamAndDirection={setSortParamAndDirection} />
 
       {arrayForButtons.map(page => (
         <button onClick={() => setPage(page)} key={page}>{page}</button>
